@@ -1,0 +1,79 @@
+version: "3.7"
+
+networks:
+    seedtoken_lan:
+        name: ${NETWORK_NAME}
+        driver: bridge
+
+services:
+    mailhog:
+        image: mailhog/mailhog
+        networks:
+            - ${NETWORK_NAME}
+        ports:
+            - ${MAILHOG_SMTP_PORT}:1025
+            - ${MAILHOG_HTTP_PORT}:8025
+
+    postgresql:
+        build: ./postgresql/
+        environment:
+            - POSTGRES_USER=${POSTGRES_USER}
+            - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            - POSTGRES_DB=${POSTGRES_DB}
+            - POSTGRES_PORT=${POSTGRES_PORT}
+            - HYDRA_DATABASE=${HYDRA_DATABASE}
+            - ACCOUNTS_DATABASE=${ACCOUNTS_DATABASE}
+            - ACCOUNTS_TEST_DATABASE=${ACCOUNTS_TEST_DATABASE}
+            - WALLET_DATABASE=${WALLET_DATABASE}
+            - WALLET_TEST_DATABASE=${WALLET_TEST_DATABASE}
+            - GREENHOUSE_DATABASE=${GREENHOUSE_DATABASE}
+            - GREENHOUSE_TEST_DATABASE=${GREENHOUSE_TEST_DATABASE}
+        networks:
+            - ${NETWORK_NAME}
+        volumes:
+            - ./volumes/postgresql/var/lib/postgresql/data:/var/lib/postgresql/data
+        ports:
+            - ${POSTGRES_PORT}:5432
+        expose:
+            - ${POSTGRES_PORT}
+
+    hydra:
+        image: ${HYDRA_IMAGE}
+        command:
+            serve all --dangerous-force-http --sqa-opt-out
+        environment:
+            - SECRETS_SYSTEM=${SECRETS_SYSTEM}
+            - DSN=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:${POSTGRES_PORT}/${HYDRA_DATABASE}?sslmode=disable
+            - URLS_SELF_ISSUER=http://127.0.0.1:${HYDRA_PUBLIC_PORT}/
+            - URLS_CONSENT=${URLS_CONSENT}
+            - URLS_LOGIN=${URLS_LOGIN}
+        networks:
+            - ${NETWORK_NAME}
+        ports:
+            - ${HYDRA_PUBLIC_PORT}:4444
+            - ${HYDRA_ADMINISTRATIVE_PORT}:4445
+        depends_on:
+            - postgresql
+
+    parity:
+        image: parity/parity:v2.5.5-stable
+        command:
+            --config dev-insecure
+            --tracing=on
+            --jsonrpc-interface=all
+            --jsonrpc-hosts=all
+            --jsonrpc-apis=all
+            --fat-db=on
+            --pruning=archive
+            --jsonrpc-cors all
+            --network-id=1010
+        networks:
+            - ${NETWORK_NAME}
+        ports:
+            - ${PARITY_JSON_RPC_PORT}:8545
+            - ${PARITY_WEB_SOCKETS_PORT}:8546
+            - ${PARITY_ETHEREUM_PORT}:30303
+            - ${PARITY_ETHEREUM_PORT}:30303/udp
+        user: root
+        volumes:
+            - ./volumes/io.parity.ethereum:/root/.local/share/io.parity.ethereum
