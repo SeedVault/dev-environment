@@ -1,3 +1,6 @@
+ifeq (,$(wildcard ./.env))
+  $(error "File .env not found. Run create-env.sh to create a .env file")
+endif
 include .env
 export
 DSN=postgres://$(POSTGRES_USER):$(POSTGRES_PASSWORD)@postgresql:$(POSTGRES_PORT)/$(HYDRA_DATABASE)?sslmode=disable
@@ -35,6 +38,7 @@ install:
 	@echo "Restarting containers..."
 	@echo
 	@docker-compose stop && docker-compose up -d
+	@echo
 	@echo "Creating OAuth2 client for Accounts..."
 	@echo
 	docker run --rm -it \
