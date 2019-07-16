@@ -1,2 +1,2 @@
-# greenhouse-docker
-Docker environment for Greenhouse
+# development Environment
+Docker environment for Greenhouse, Wallet and accounts
