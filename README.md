@@ -26,10 +26,10 @@ configuring their programming environments.
 
 * You need both [Docker](https://docs.docker.com/) and [Docker-Compose](https://docs.docker.com/compose/) installed and working correctly on your dev machine.
 
-* Make sure that ports `1025, 8025, 5432, 4444, 4445, 8545, 8546, 30303, 3000` are not being used by other services:
+* Make sure that ports `1025, 8025, 5432, 4444, 4445, 8545, 8546, 30303, 3000, 9000, 9001, 9002` are not being used by other services:
 
 ```bash
-sudo netstat -tuplen | grep '1025\|8025\|5432\|4444\|4445\|8545\|8546\|30303\|3000'
+sudo netstat -tuplen | grep '1025\|8025\|5432\|4444\|4445\|8545\|8546\|30303\|3000\|9000\|9001\|9002'
 ```
 
 ### Installation steps
