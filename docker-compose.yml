@@ -42,16 +42,16 @@ services:
         command:
             serve all --dangerous-force-http --sqa-opt-out
         environment:
-            - SECRETS_SYSTEM=${SECRETS_SYSTEM}
+            - SECRETS_SYSTEM=${HYDRA_SECRETS_SYSTEM}
             - DSN=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:${POSTGRES_PORT}/${HYDRA_DATABASE}?sslmode=disable
             - URLS_SELF_ISSUER=http://127.0.0.1:${HYDRA_PUBLIC_PORT}/
-            - URLS_CONSENT=${URLS_CONSENT}
-            - URLS_LOGIN=${URLS_LOGIN}
+            - URLS_CONSENT=${ACCOUNTS_CONSENT_URL}
+            - URLS_LOGIN=${ACCOUNTS_LOGIN_URL}
         networks:
             - ${NETWORK_NAME}
         ports:
             - ${HYDRA_PUBLIC_PORT}:4444
-            - ${HYDRA_ADMINISTRATIVE_PORT}:4445
+            - ${HYDRA_ADMIN_PORT}:4445
         depends_on:
             - postgresql
 

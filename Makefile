@@ -50,7 +50,7 @@ install:
     --secret $(ACCOUNTS_OAUTH2_CLIENT_SECRET) \
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
-	--callbacks $(ACCOUNTS_OAUTH2_REDIRECT_URI) \
+	--callbacks $(ACCOUNTS_OAUTH2_CALLBACK_URL) \
 	--token-endpoint-auth-method client_secret_post
 	@echo
 	@echo "Creating OAuth2 client for Wallet..."
@@ -64,7 +64,7 @@ install:
     --secret $(WALLET_OAUTH2_CLIENT_SECRET) \
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
-	--callbacks $(WALLET_OAUTH2_REDIRECT_URI) \
+	--callbacks $(WALLET_OAUTH2_CALLBACK_URL) \
 	--token-endpoint-auth-method client_secret_post
 	@echo
 	@echo "Creating OAuth2 client for Greenhouse..."
@@ -78,7 +78,7 @@ install:
     --secret $(GREENHOUSE_OAUTH2_CLIENT_SECRET) \
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
-	--callbacks $(GREENHOUSE_OAUTH2_REDIRECT_URI) \
+	--callbacks $(GREENHOUSE_OAUTH2_CALLBACK_URL) \
 	--token-endpoint-auth-method client_secret_post
 	@echo
 	@docker-compose ps
