@@ -22,6 +22,11 @@ all:
 	@echo
 
 install:
+	@echo
+	@echo Creating self-signed SSL keys...
+	@echo
+	@mkdir -p certs
+	@openssl req -x509 -newkey rsa:4096 -keyout ./certs/key.pem -out ./certs/cert.pem -days 365 -nodes -subj "/C=US/ST=California/L=Emeryville/O=SEED Token/CN=seedtoken.io"
 	@docker-compose down && docker network create $(NETWORK_NAME)
 	@echo
 	@echo "Installing containers..."
