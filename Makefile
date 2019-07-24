@@ -25,8 +25,10 @@ install:
 	@echo
 	@echo Creating self-signed SSL keys...
 	@echo
-	@mkdir -p certs
-	@openssl req -x509 -newkey rsa:4096 -keyout ./certs/key.pem -out ./certs/cert.pem -days 365 -nodes -subj "/C=US/ST=California/L=Emeryville/O=SEED Token/CN=seedtoken.io"
+	@if [ ! -d ./certs ]; then \
+	mkdir -p certs; \
+	openssl req -x509 -newkey rsa:4096 -keyout ./certs/key.pem -out ./certs/cert.pem -days 365 -nodes -subj "/C=US/ST=California/L=Emeryville/O=SEED Token/OU=SEED Technologies/CN=seedtoken.io"; \
+	fi
 	@docker-compose down && docker network create $(NETWORK_NAME)
 	@echo
 	@echo "Installing containers..."
@@ -56,7 +58,11 @@ install:
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
 	--callbacks $(ACCOUNTS_OAUTH2_CALLBACK_URL) \
-	--token-endpoint-auth-method client_secret_post
+	--token-endpoint-auth-method client_secret_post \
+	--name $(ACCOUNTS_OAUTH2_NAME) \
+	--logo-uri $(ACCOUNTS_OAUTH2_LOGO_URL) \
+	--tos-uri $(ACCOUNTS_OAUTH2_TOS_URL) \
+	--policy-uri $(ACCOUNTS_OAUTH2_POLICY_URL)
 	@echo
 	@echo "Creating OAuth2 client for Wallet..."
 	@echo
@@ -70,7 +76,11 @@ install:
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
 	--callbacks $(WALLET_OAUTH2_CALLBACK_URL) \
-	--token-endpoint-auth-method client_secret_post
+	--token-endpoint-auth-method client_secret_post \
+	--name $(WALLET_OAUTH2_NAME) \
+	--logo-uri $(WALLET_OAUTH2_LOGO_URL) \
+	--tos-uri $(WALLET_OAUTH2_TOS_URL) \
+	--policy-uri $(WALLET_OAUTH2_POLICY_URL)
 	@echo
 	@echo "Creating OAuth2 client for Greenhouse..."
 	@echo
@@ -84,7 +94,11 @@ install:
     --grant-types client_credentials,authorization_code,refresh_token \
     --response-types token,code,id_token \
 	--callbacks $(GREENHOUSE_OAUTH2_CALLBACK_URL) \
-	--token-endpoint-auth-method client_secret_post
+	--token-endpoint-auth-method client_secret_post \
+	--name $(GREENHOUSE_OAUTH2_NAME) \
+	--logo-uri $(GREENHOUSE_OAUTH2_LOGO_URL) \
+	--tos-uri $(GREENHOUSE_OAUTH2_TOS_URL) \
+	--policy-uri $(GREENHOUSE_OAUTH2_POLICY_URL)
 	@echo
 	@docker-compose ps
 	@echo
