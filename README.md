@@ -11,9 +11,16 @@ configuring their programming environments.
 
 * [Hydra 1.0](https://gethydra.sh/) - Hardened OAuth 2.0 & OpenID Connect Server.
 * [Parity 2.5.5](https://www.parity.io/ethereum/) - Ethereum client with a private development chain mode.
+* [MongoDB 4.0.11](https://www.mongodb.com/) - Document-oriented database.
 * [Redis 5](https://redis.io/) - In-memory data structure store used as a database, cache and message broker.
 * [PostgreSQL 11](https://www.postgresql.org) - Relational database management system (RDBMS)
 * [Mailhog (latest)](https://github.com/mailhog/MailHog) - SMTP server with a GUI testing tool.
+* [Mongo-Express 0.53.0](https://github.com/mongo-express/mongo-express) - Web-based MongoDB admin interface
+
+<p align="center">
+  <br><br>
+  <img src="network.png">
+</p>
 
 ## Installation
 
@@ -29,10 +36,10 @@ configuring their programming environments.
 
 * [OpenSSL](https://www.openssl.org/) to generate a self-signed certificate.
 
-* Make sure that ports `1025, 6379, 8025, 5432, 4444, 4445, 8545, 8546, 30303, 3000, 9000, 9001, 9002` are not being used by other services:
+* Make sure that ports `1025, 6379, 8025, 5432, 4444, 4445, 8545, 8546, 30303, 3000, 9000, 9001, 9002, 27017, 8081` are not being used by other services:
 
 ```bash
-sudo netstat -tuplen | grep '1025\|6379\|8025\|5432\|4444\|4445\|8545\|8546\|30303\|3000\|9000\|9001\|9002'
+sudo netstat -tuplen | grep '1025\|6379\|8025\|5432\|4444\|4445\|8545\|8546\|30303\|3000\|9000\|9001\|9002\|27017\|8081|'
 ```
 
 ### Installation steps
