@@ -65,22 +65,17 @@ make install
 4. The development environment should be up and running in your machine.
 
 
-### Configurating apps
+### Configuring apps
 
 1. Go to your app folder.
 
 2. Create a symlink to the `.env` file located in the dev-environment folder:
 
 ```bash
-ln -s ../dev-environment/./.env
+ln -s ../dev-environment/.env
 ```
 
-3. Create a symlink to the `certs` folder to use the self-signed certificates:
-
-```bash
-ln -s ../dev-environment/certs
-```
-4. The application is ready to use.
+3. The application is ready to use.
 
 
 ## Daily usage
