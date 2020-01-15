@@ -29,7 +29,6 @@ services:
             - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
             - POSTGRES_DB=${POSTGRES_DB}
             - POSTGRES_PORT=${POSTGRES_PORT}
-            - HYDRA_DATABASE=${HYDRA_DATABASE}
             - ACCOUNTS_DATABASE=${ACCOUNTS_DATABASE}
             - ACCOUNTS_TEST_DATABASE=${ACCOUNTS_TEST_DATABASE}
             - WALLET_DATABASE=${WALLET_DATABASE}
@@ -44,24 +43,6 @@ services:
             - ${POSTGRES_PORT}:5432
         expose:
             - ${POSTGRES_PORT}
-
-    hydra:
-        image: ${HYDRA_IMAGE}
-        command:
-            serve all --dangerous-force-http --sqa-opt-out
-        environment:
-            - SECRETS_SYSTEM=${HYDRA_SECRETS_SYSTEM}
-            - DSN=postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:${POSTGRES_PORT}/${HYDRA_DATABASE}?sslmode=disable
-            - URLS_SELF_ISSUER=http://127.0.0.1:${HYDRA_PUBLIC_PORT}/
-            - URLS_CONSENT=${ACCOUNTS_CONSENT_URL}
-            - URLS_LOGIN=${ACCOUNTS_LOGIN_URL}
-        networks:
-            - ${NETWORK_NAME}
-        ports:
-            - ${HYDRA_PUBLIC_PORT}:4444
-            - ${HYDRA_ADMIN_PORT}:4445
-        depends_on:
-            - postgresql
 
     parity:
         image: parity/parity:v2.5.5-stable
@@ -138,7 +119,7 @@ services:
             - ETHEREUM_JSONRPC_HTTP_URL=http://parity:${PARITY_JSON_RPC_PORT}
             - ETHEREUM_JSONRPC_TRACE_URL=http://parity:${PARITY_JSON_RPC_PORT}
             - ETHEREUM_JSONRPC_WS_URL=ws://parity:${PARITY_WEB_SOCKETS_PORT}
-            - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:${POSTGRES_PORT}/explorer?ssl=false
+            - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgresql:5432/explorer?ssl=false
         networks:
             - ${NETWORK_NAME}
         ports:
