@@ -120,7 +120,7 @@ services:
 
     explorer:
         build:
-            context: https://github.com/SeedVault/blockexplorer.git#master:blockexplorer            
+            context: https://github.com/SeedVault/blockexplorer.git#initial:blockexplorer
             dockerfile: docker/Dockerfile
             args:
                 SECRET_KEY_BASE: ${BLOCKSCOUT_SECRET_KEY_BASE}
@@ -133,7 +133,7 @@ services:
             - LOGO=/images/seed-logo.svg
             - LOGO_FOOTER=/images/seed-footer-logo.svg
             - ETHEREUM_JSONRPC_VARIANT=parity
-            - COIN=ETH
+            - COIN=
             - SECRET_KEY_BASE=${BLOCKSCOUT_SECRET_KEY_BASE}
             - ETHEREUM_JSONRPC_HTTP_URL=http://parity:${PARITY_JSON_RPC_PORT}
             - ETHEREUM_JSONRPC_TRACE_URL=http://parity:${PARITY_JSON_RPC_PORT}
